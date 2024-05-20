@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Mapbox Map</title>
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet">
+<style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYmVhdmlzZ2VvIiwiYSI6ImNsdXd5bmp2OTBnODgyam84MDJtcHpkeHAifQ.Uhp_GsqkKUs2nOfuTzqMSw';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [0, 0], // starting position [lng, lat]
+            zoom: 2 // starting zoom
+        });
+ 
+        // Fetch coordinates from the server and add markers to the map
+        fetch('fetch_coordinates.php')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(coord => {
+                    new mapboxgl.Marker()
+                        .setLngLat([coord.longitude, coord.latitude])
+                        .addTo(map);
+                });
+            });
+</script>
+</body>
+</html>
